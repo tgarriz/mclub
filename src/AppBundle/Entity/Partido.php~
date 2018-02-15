@@ -1,0 +1,299 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Partido
+ *
+ * @ORM\Table(name="partido")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\PartidoRepository")
+ */
+class Partido
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="fecha", type="datetime")
+     */
+    private $fecha;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="rival", type="string", length=255)
+     */
+    private $rival;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="resultado", type="string", length=50)
+     */
+    private $resultado;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="ganamos", type="boolean")
+     */
+    private $ganamos;
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="local", type="boolean")
+     */
+    private $local;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Equipo")
+     * @ORM\JoinColumn(name="equipo_id", referencedColumnName="id")
+     */
+    private $equipo;
+
+    /**
+     * Many Users have Many Groups.
+     * @ORM\ManyToMany(targetEntity="Jugador", inversedBy="jugadores")
+     * @ORM\JoinTable(name="jugadores_partidos")
+     */
+     private $titulares;
+
+     /**
+     * One Product has Many Features.
+     * @ORM\OneToMany(targetEntity="Cambio", mappedBy="partido")
+     */
+     private $cambios;
+
+     /**
+     * One Product has Many Features.
+     * @ORM\OneToMany(targetEntity="Scrum", mappedBy="partido")
+     */
+     private $scrums;
+
+     /**
+     * One Product has Many Features.
+     * @ORM\OneToMany(targetEntity="Line", mappedBy="partido")
+     */
+     private $lines;
+
+     /**
+     * One Product has Many Features.
+     * @ORM\OneToMany(targetEntity="Tackle", mappedBy="partido")
+     */
+     private $tackles;
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set fecha
+     *
+     * @param \DateTime $fecha
+     *
+     * @return Partido
+     */
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
+
+        return $this;
+    }
+
+    /**
+     * Get fecha
+     *
+     * @return \DateTime
+     */
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+
+    /**
+     * Set rival
+     *
+     * @param string $rival
+     *
+     * @return Partido
+     */
+    public function setRival($rival)
+    {
+        $this->rival = $rival;
+
+        return $this;
+    }
+
+    /**
+     * Get rival
+     *
+     * @return string
+     */
+    public function getRival()
+    {
+        return $this->rival;
+    }
+
+    /**
+     * Set resultado
+     *
+     * @param string $resultado
+     *
+     * @return Partido
+     */
+    public function setResultado($resultado)
+    {
+        $this->resultado = $resultado;
+
+        return $this;
+    }
+
+    /**
+     * Get resultado
+     *
+     * @return string
+     */
+    public function getResultado()
+    {
+        return $this->resultado;
+    }
+
+    /**
+     * Set ganamos
+     *
+     * @param boolean $ganamos
+     *
+     * @return Partido
+     */
+    public function setGanamos($ganamos)
+    {
+        $this->ganamos = $ganamos;
+
+        return $this;
+    }
+
+    /**
+     * Get ganamos
+     *
+     * @return bool
+     */
+    public function getGanamos()
+    {
+        return $this->ganamos;
+    }
+
+    /**
+     * Set local
+     *
+     * @param boolean $local
+     *
+     * @return Partido
+     */
+    public function setLocal($local)
+    {
+        $this->local = $local;
+
+        return $this;
+    }
+
+    /**
+     * Get local
+     *
+     * @return bool
+     */
+    public function getLocal()
+    {
+        return $this->local;
+    }
+
+    /**
+     * Set equipo
+     *
+     * @param \AppBundle\Entity\Equipo $equipo
+     *
+     * @return Partido
+     */
+    public function setEquipo(\AppBundle\Entity\Equipo $equipo = null)
+    {
+        $this->equipo = $equipo;
+
+        return $this;
+    }
+
+    /**
+     * Get equipo
+     *
+     * @return \AppBundle\Entity\Equipo
+     */
+    public function getEquipo()
+    {
+        return $this->equipo;
+    }
+
+    public function __toString()
+    {
+      return $this->rival."-".$this->fecha;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->titulares = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->cambios = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->scrums = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->lines = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->tackles = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add titulare
+     *
+     * @param \AppBundle\Entity\Jugador $titulare
+     *
+     * @return Partido
+     */
+    public function addTitulare(\AppBundle\Entity\Jugador $titular)
+    {
+        $this->titulares[] = $titular;
+
+        return $this;
+    }
+
+    /**
+     * Remove titulare
+     *
+     * @param \AppBundle\Entity\Jugador $titulare
+     */
+    public function removeTitulare(\AppBundle\Entity\Jugador $titular)
+    {
+        $this->titulares->removeElement($titular);
+    }
+
+    /**
+     * Get titulares
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTitulares()
+    {
+        return $this->titulares;
+    }
+}

@@ -1,0 +1,48 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Cambio
+ *
+ * @ORM\Table(name="cambio")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\CambioRepository")
+ */
+class Cambio
+{
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Partido")
+     * @ORM\JoinColumn(name="partido_id", referencedColumnName="id")
+     */
+    private $partido;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Jugador")
+     * @ORM\JoinColumn(name="j_sale_id", referencedColumnName="id")
+     */
+    private $j_sale;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="Jugador")
+     * @ORM\JoinColumn(name="j_entra_id", referencedColumnName="id")
+     */
+    private $j_entra;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="minuto", type="integer", unique=false)
+     */
+    protected $minuto;
+}
